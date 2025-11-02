@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-4">
+    <div class="card shadow">
+      <div class="card-body">
+        <h4 class="mb-3">Iniciar sesión</h4>
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary w-100" type="submit">Entrar</button>
+        </form>
+      </div>
+    </div>
+    {% if form.errors %}
+      <div class="alert alert-danger mt-3">Credenciales inválidas.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

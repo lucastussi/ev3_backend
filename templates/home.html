@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+  <div class="container" style="max-width: 720px; margin-top: 2rem;">
+    <h2>EV3 – Gestión de Activos</h2>
+    <p>Bienvenido, {% if user.is_authenticated %}{{ user.username }}{% else %}invitado{% endif %}.</p>
+
+    <div style="margin: 1rem 0;">
+      <a class="btn btn-primary" href="{% url 'assets:list' %}">Ver Assets</a>
+      {% if user.is_authenticated %}
+        <a class="btn btn-secondary" href="{% url 'logout' %}">Cerrar sesión</a>
+      {% else %}
+        <a class="btn btn-success" href="{% url 'login' %}">Iniciar sesión</a>
+      {% endif %}
+    </div>
+
+    <hr>
+    <p style="color:#666;">Este es un home mínimo para navegar sin escribir URLs.</p>
+  </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Assets{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Mis Assets{% if user.is_superuser %} (Admin: viendo todos){% endif %}</h2>
+    <a class="btn btn-primary" href="{% url 'assets:create' %}">Nuevo Asset</a>
+  </div>
+
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Criticidad</th>
+        <th>Estado</th>
+        <th>Propietario</th>
+        <th>Creado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in assets %}
+      <tr>
+        <!-- Enlace a editar (no a 'detail') -->
+        <td><a href="{% url 'assets:edit' a.pk %}">{{ a.name }}</a></td>
+        <td>{{ a.category }}</td>
+        <td class="text-capitalize">
+          {{ a.get_criticality_display|default:a.criticality }}
+        </td>
+        <td class="text-capitalize">
+          {{ a.get_status_display|default:a.status }}
+        </td>
+        <td>{{ a.owner.username }}</td>
+        <td>{{ a.created_at|date:"Y-m-d H:i" }}</td>
+        <td>
+          {% if user.is_superuser or a.owner_id == user.id %}
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'assets:edit' a.pk %}">Editar</a>
+            <a class="btn btn-sm btn-outline-danger" href="{% url 'assets:delete' a.pk %}">Eliminar</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="7" class="text-muted">No hay assets para mostrar.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
